@@ -2,6 +2,7 @@ package com.example.basicandroidmqttclient;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.content.Intent;
 import android.view.View;
@@ -13,17 +14,21 @@ import com.hivemq.client.mqtt.mqtt5.Mqtt5BlockingClient;
 import com.hivemq.client.mqtt.mqtt5.Mqtt5Client;
 
 import java.util.UUID;
-import java.util.concurrent.Executor;
-
 
 public class MainActivity extends AppCompatActivity {
     public static final String EXTRA_MESSAGE = "com.example.basicandroidmqttclient.MESSAGE";
     public static final String brokerURI = "3.223.10.115";
 
+    Activity thisActivity;
+    TextView tv;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        thisActivity = this;
+        tv = (TextView) findViewById(R.id.textViewSubscribedMsg);
     }
 
     /** Called when the user taps the Send button */
@@ -56,14 +61,23 @@ public class MainActivity extends AppCompatActivity {
 
         client.connect();
 
+        //TextView textView = (TextView) findViewById(R.id.textViewSubscribedMsg);
+        //textView.setText("Waiting for subscribed message.....");
+
         // Use a callback to show the message on the screen
         client.toAsync().subscribeWith()
                 .topicFilter(topicName.getText().toString())
                 .qos(MqttQos.AT_LEAST_ONCE)
-                .callback(System.out::println)
+                .callback(msg -> {
+                    System.out.println("Subscribed message arrived............");
+                    thisActivity.runOnUiThread(new Runnable() {
+                        public void run() {
+                            tv.setText(msg.toString());
+                        }
+                    });
+                })
                 .send();
     }
-
 
 
 
