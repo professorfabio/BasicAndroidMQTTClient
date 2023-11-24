@@ -13,6 +13,7 @@ import com.hivemq.client.mqtt.datatypes.MqttQos;
 import com.hivemq.client.mqtt.mqtt5.Mqtt5BlockingClient;
 import com.hivemq.client.mqtt.mqtt5.Mqtt5Client;
 
+import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
@@ -20,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String brokerURI = "3.223.10.115";
 
     Activity thisActivity;
-    TextView tv;
+    TextView subMsgTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         thisActivity = this;
-        tv = (TextView) findViewById(R.id.textViewSubscribedMsg);
+        subMsgTextView = (TextView) findViewById(R.id.editTextMultiLineSubMsg);
     }
 
     /** Called when the user taps the Send button */
@@ -61,18 +62,15 @@ public class MainActivity extends AppCompatActivity {
 
         client.connect();
 
-        //TextView textView = (TextView) findViewById(R.id.textViewSubscribedMsg);
-        //textView.setText("Waiting for subscribed message.....");
-
         // Use a callback to show the message on the screen
         client.toAsync().subscribeWith()
                 .topicFilter(topicName.getText().toString())
                 .qos(MqttQos.AT_LEAST_ONCE)
                 .callback(msg -> {
-                    System.out.println("Subscribed message arrived............");
                     thisActivity.runOnUiThread(new Runnable() {
                         public void run() {
-                            tv.setText(msg.toString());
+                            //tv.setText(msg.toString());
+                            subMsgTextView.setText(new String(msg.getPayloadAsBytes(), StandardCharsets.UTF_8));
                         }
                     });
                 })

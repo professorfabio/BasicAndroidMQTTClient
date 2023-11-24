@@ -66,9 +66,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="36dp"
+        android:layout_marginTop="190dp"
         android:text="Topic:"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="356dp" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewValue" />
 
     <EditText
         android:id="@+id/editTextTopicNameSub"
@@ -94,14 +95,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextTopicNameSub" />
 
-    <TextView
-        android:id="@+id/textViewSubscribedMsg"
+    <EditText
+        android:id="@+id/editTextMultiLineSubMsg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="66dp"
-        android:text="Subscribed message will appear here"
+        android:layout_marginTop="65dp"
+        android:ems="10"
+        android:gravity="start|top"
+        android:inputType="textMultiLine"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonSubscribe" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonSubscribe"
+        tools:text="Subscribed message will appear here." />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
