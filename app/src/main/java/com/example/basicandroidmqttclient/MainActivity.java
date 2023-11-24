@@ -13,6 +13,7 @@ import com.hivemq.client.mqtt.mqtt5.Mqtt5BlockingClient;
 import com.hivemq.client.mqtt.mqtt5.Mqtt5Client;
 
 import java.util.UUID;
+import java.util.concurrent.Executor;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -55,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
 
         client.connect();
 
+        // Use a callback to show the message on the screen
         client.toAsync().subscribeWith()
                 .topicFilter(topicName.getText().toString())
                 .qos(MqttQos.AT_LEAST_ONCE)
@@ -62,9 +64,7 @@ public class MainActivity extends AppCompatActivity {
                 .send();
     }
 
-    public void subscriptionCallback(String msg) {
-        TextView textView = (TextView) findViewById(R.id.textViewSubscribedMsg);
 
-        textView.setText(msg);
-    }
+
+
 }
