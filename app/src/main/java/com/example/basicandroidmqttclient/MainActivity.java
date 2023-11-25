@@ -44,7 +44,11 @@ public class MainActivity extends AppCompatActivity {
                 .buildBlocking();
 
         client.connect();
-        client.publishWith().topic(topicName.getText().toString()).qos(MqttQos.AT_LEAST_ONCE).payload(value.getText().toString().getBytes()).send();
+        client.publishWith()
+                .topic(topicName.getText().toString())
+                .qos(MqttQos.AT_LEAST_ONCE)
+                .payload(value.getText().toString().getBytes())
+                .send();
         client.disconnect();
 
         String message = topicName.getText().toString() + " " + value.getText().toString();
@@ -69,7 +73,6 @@ public class MainActivity extends AppCompatActivity {
                 .callback(msg -> {
                     thisActivity.runOnUiThread(new Runnable() {
                         public void run() {
-                            //tv.setText(msg.toString());
                             subMsgTextView.setText(new String(msg.getPayloadAsBytes(), StandardCharsets.UTF_8));
                         }
                     });
