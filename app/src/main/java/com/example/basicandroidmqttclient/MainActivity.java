@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
 
         client.connect();
 
-        // Use a callback to show the message on the screen
+        // Use a callback lambda function to show the message on the screen
         client.toAsync().subscribeWith()
                 .topicFilter(topicName.getText().toString())
                 .qos(MqttQos.AT_LEAST_ONCE)
